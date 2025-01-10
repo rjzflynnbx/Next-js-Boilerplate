@@ -21,13 +21,13 @@ export default function Sidebar() {
   const [activeCategory, setActiveCategory] = useState('recommended');
 
   return (
-    <aside className="w-64 border-r bg-white">
+    <aside className="min-h-screen w-64 border-r bg-white">
       <nav className="p-4">
         {categories.map(category => (
           <Link
             key={category.id}
             href={`/category/${category.id}`}
-            className={`my-1 block rounded px-4 py-2 ${
+            className={`my-1 block rounded px-4 py-2 transition-colors ${
               activeCategory === category.id
                 ? 'bg-red-600 text-white'
                 : 'text-gray-700 hover:bg-gray-100'

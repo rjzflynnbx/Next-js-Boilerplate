@@ -24,7 +24,7 @@ export default withSentryConfig(
         remotePatterns: [
           {
             protocol: 'https',
-            hostname: 'placeholder.com',
+            hostname: '**',
             port: '',
             pathname: '/**',
           },
