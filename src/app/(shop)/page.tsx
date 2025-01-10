@@ -25,9 +25,7 @@ export default function HomePage() {
       </div>
       <ProductGrid
         products={mockProducts}
-        onProductSelect={() => {
-          // We'll implement this later
-        }}
+        onProductSelect={() => {}}
       />
     </Layout>
   );
