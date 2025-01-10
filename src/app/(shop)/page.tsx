@@ -19,14 +19,16 @@ const mockProducts: Product[] = [
 export default function HomePage() {
   return (
     <Layout>
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold">RECOMMENDED</h1>
-        <p className="mt-2 text-gray-600">We've got your chicken fix right here!</p>
-      </div>
-      <ProductGrid
-        products={mockProducts}
-        onProductSelect={() => {}}
-      />
+      <main className="p-8">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold">RECOMMENDED</h1>
+          <p className="mt-2 text-gray-600">We've got your chicken fix right here!</p>
+        </div>
+        <ProductGrid
+          products={mockProducts}
+          onProductSelect={() => {}}
+        />
+      </main>
     </Layout>
   );
 }
