@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+// import { useState } from 'react';
 
 type SidebarProps = {
   onCategoryClick: (categoryId: string) => void;
+  activeCategory: string;
 };
 
 const categories = [
@@ -20,11 +21,9 @@ const categories = [
   { id: 'sides-dips', name: 'CLASSIC SIDES & DIPS' },
 ];
 
-export default function Sidebar({ onCategoryClick }: SidebarProps) {
-  const [activeCategory, setActiveCategory] = useState('recommended');
-
+export default function Sidebar({ onCategoryClick, activeCategory }: SidebarProps) {
   return (
-    <aside className="min-h-screen w-64 border-r bg-white">
+    <aside className="h-full w-64 border-r bg-white">
       <nav className="p-4">
         {categories.map(category => (
           <button
@@ -34,10 +33,7 @@ export default function Sidebar({ onCategoryClick }: SidebarProps) {
                 ? 'bg-red-600 text-white'
                 : 'text-gray-700 hover:bg-gray-100'
             }`}
-            onClick={() => {
-              setActiveCategory(category.id);
-              onCategoryClick(category.id);
-            }}
+            onClick={() => onCategoryClick(category.id)}
           >
             {category.name}
           </button>
