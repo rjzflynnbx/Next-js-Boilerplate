@@ -20,7 +20,7 @@ export default withSentryConfig(
       reactStrictMode: true,
       serverExternalPackages: ['@electric-sql/pglite'],
       images: {
-        domains: ['localhost'],
+        domains: ['localhost', 'assets.kfcapi.com'], // Add KFC domain here
         remotePatterns: [
           {
             protocol: 'https',

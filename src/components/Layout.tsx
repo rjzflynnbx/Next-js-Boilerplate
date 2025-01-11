@@ -1,12 +1,17 @@
 'use client';
 
 import Sidebar from '@/components/Sidebar';
-import React from 'react';
+import React, { type ReactNode } from 'react';
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+type LayoutProps = {
+  children: ReactNode;
+  onCategoryClick: (categoryId: string) => void;
+};
+
+export default function Layout({ children, onCategoryClick }: LayoutProps) {
   return (
     <div className="flex min-h-screen">
-      <Sidebar />
+      <Sidebar onCategoryClick={onCategoryClick} />
       <div className="flex-1">
         {children}
       </div>
