@@ -2,8 +2,9 @@
 
 import type { Product } from '@/types';
 import Layout from '@/components/Layout';
+import ProductDetailModal from '@/components/ProductDetailModal';
 import ProductGrid from '@/components/ProductGrid';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 const categories = [
   { id: 'recommended', name: 'RECOMMENDED' },
@@ -123,34 +124,12 @@ const mockProducts: Product[] = [
 
 export default function HomePage() {
   const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({});
-  const [activeCategory, setActiveCategory] = useState('recommended');
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY + 200; // offset for better UX
-
-      for (const [category, ref] of Object.entries(sectionRefs.current)) {
-        if (!ref) {
-          continue;
-        }
-
-        const { offsetTop, offsetHeight } = ref;
-
-        if (scrollPosition >= offsetTop
-          && scrollPosition < offsetTop + offsetHeight) {
-          setActiveCategory(category);
-          break;
-        }
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [activeCategory, setActiveCategory] = useState('recommended'); // Add this
 
   const scrollToCategory = (categoryId: string) => {
     sectionRefs.current[categoryId]?.scrollIntoView({ behavior: 'smooth' });
-    setActiveCategory(categoryId);
+    setActiveCategory(categoryId); // Update active category when scrolling
   };
 
   const productsByCategory = categories.map(category => ({
@@ -161,7 +140,7 @@ export default function HomePage() {
   return (
     <Layout
       onCategoryClick={scrollToCategory}
-      activeCategory={activeCategory}
+      activeCategory={activeCategory} // Add this prop
     >
       <main className="p-8">
         {productsByCategory.map(({ id, name, products }) => (
@@ -179,7 +158,7 @@ export default function HomePage() {
               ? (
                   <ProductGrid
                     products={products}
-                    onProductSelect={() => {}}
+                    onProductSelect={product => setSelectedProduct(product)}
                   />
                 )
               : (
@@ -188,6 +167,17 @@ export default function HomePage() {
           </section>
         ))}
       </main>
+
+      {selectedProduct && (
+        <ProductDetailModal
+          product={selectedProduct}
+          isOpen={!!selectedProduct}
+          onClose={() => setSelectedProduct(null)}
+          onAddToOrder={(_product, _quantity) => {
+            setSelectedProduct(null);
+          }}
+        />
+      )}
     </Layout>
   );
 }

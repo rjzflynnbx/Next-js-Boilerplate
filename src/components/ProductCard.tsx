@@ -5,19 +5,27 @@ import Image from 'next/image';
 
 type ProductCardProps = {
   product: Product;
-  onSelect: (product: Product) => void;
+  onShowDetail: (product: Product) => void;
 };
 
-export default function ProductCard({ product, onSelect }: ProductCardProps) {
+export default function ProductCard({ product, onShowDetail }: ProductCardProps) {
   return (
-    <div className="overflow-hidden rounded-lg bg-white shadow-md">
-      <div className="relative h-48 w-full">
+    <button
+      type="button"
+      className="w-full cursor-pointer overflow-hidden rounded-lg bg-white text-left shadow-md transition-shadow hover:shadow-lg"
+      onClick={() => onShowDetail(product)}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          onShowDetail(product);
+        }
+      }}
+    >
+      <div className="relative h-48">
         <Image
           src={product.image}
           alt={product.name}
           fill
           className="object-cover"
-          priority
         />
       </div>
       <div className="p-4">
@@ -30,13 +38,16 @@ export default function ProductCard({ product, onSelect }: ProductCardProps) {
           </span>
           <button
             type="button"
-            onClick={() => onSelect(product)}
-            className="rounded bg-red-600 px-4 py-2 text-white transition-colors hover:bg-red-700"
+            onClick={(e) => {
+              e.stopPropagation(); // Prevent parent button click
+              // Add to cart logic here
+            }}
+            className="rounded bg-red-600 px-4 py-2 text-white hover:bg-red-700"
           >
             ADD TO BASKET
           </button>
         </div>
       </div>
-    </div>
+    </button>
   );
 }

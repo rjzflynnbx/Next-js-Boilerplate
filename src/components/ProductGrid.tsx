@@ -1,11 +1,9 @@
-'use client';
-
-import type { Product } from '../types';
+import type { Product } from '@/types';
 import ProductCard from './ProductCard';
 
 type ProductGridProps = {
   products: Product[];
-  onProductSelect: (product: Product) => void;
+  onProductSelect: (product: Product) => void; // Changed from onProductSelect
 };
 
 export default function ProductGrid({ products, onProductSelect }: ProductGridProps) {
@@ -15,7 +13,7 @@ export default function ProductGrid({ products, onProductSelect }: ProductGridPr
         <ProductCard
           key={product.id}
           product={product}
-          onSelect={onProductSelect}
+          onShowDetail={onProductSelect} // Pass the handler down
         />
       ))}
     </div>
