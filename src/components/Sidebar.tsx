@@ -1,10 +1,8 @@
 'use client';
 
-// import { useState } from 'react';
-
 type SidebarProps = {
-  onCategoryClick: (categoryId: string) => void;
   activeCategory: string;
+  onCategoryClick: (categoryId: string) => void;
 };
 
 const categories = [
@@ -21,10 +19,10 @@ const categories = [
   { id: 'sides-dips', name: 'CLASSIC SIDES & DIPS' },
 ];
 
-export default function Sidebar({ onCategoryClick, activeCategory }: SidebarProps) {
+export default function Sidebar({ activeCategory, onCategoryClick }: SidebarProps) {
   return (
-    <aside className="h-full w-64 border-r bg-white">
-      <nav className="p-4">
+    <aside className="min-h-screen w-64 border-r bg-white">
+      <nav className="sticky top-0 p-4">
         {categories.map(category => (
           <button
             key={category.id}
@@ -34,6 +32,7 @@ export default function Sidebar({ onCategoryClick, activeCategory }: SidebarProp
                 : 'text-gray-700 hover:bg-gray-100'
             }`}
             onClick={() => onCategoryClick(category.id)}
+            type="button"
           >
             {category.name}
           </button>

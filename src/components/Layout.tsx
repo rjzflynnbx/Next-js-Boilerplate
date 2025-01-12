@@ -5,17 +5,15 @@ import React, { type ReactNode } from 'react';
 
 type LayoutProps = {
   children: ReactNode;
-  onCategoryClick: (categoryId: string) => void;
   activeCategory: string;
+  onCategoryClick: (categoryId: string) => void;
 };
 
-export default function Layout({ children, onCategoryClick, activeCategory }: LayoutProps) {
+export default function Layout({ children, activeCategory, onCategoryClick }: LayoutProps) {
   return (
     <div className="flex min-h-screen">
-      <div className="fixed left-0 top-0 h-screen">
-        <Sidebar onCategoryClick={onCategoryClick} activeCategory={activeCategory} />
-      </div>
-      <div className="ml-64 flex-1 overflow-y-auto">
+      <Sidebar activeCategory={activeCategory} onCategoryClick={onCategoryClick} />
+      <div className="flex-1">
         {children}
       </div>
     </div>

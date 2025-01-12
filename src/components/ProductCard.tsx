@@ -10,9 +10,10 @@ type ProductCardProps = {
 
 export default function ProductCard({ product, onShowDetail }: ProductCardProps) {
   return (
-    <button
-      type="button"
-      className="w-full cursor-pointer overflow-hidden rounded-lg bg-white text-left shadow-md transition-shadow hover:shadow-lg"
+    <div
+      role="button"
+      tabIndex={0}
+      className="cursor-pointer overflow-hidden rounded-lg bg-white shadow-md transition-shadow hover:shadow-lg"
       onClick={() => onShowDetail(product)}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
@@ -39,8 +40,7 @@ export default function ProductCard({ product, onShowDetail }: ProductCardProps)
           <button
             type="button"
             onClick={(e) => {
-              e.stopPropagation(); // Prevent parent button click
-              // Add to cart logic here
+              e.stopPropagation(); // Prevent parent click
             }}
             className="rounded bg-red-600 px-4 py-2 text-white hover:bg-red-700"
           >
@@ -48,6 +48,6 @@ export default function ProductCard({ product, onShowDetail }: ProductCardProps)
           </button>
         </div>
       </div>
-    </button>
+    </div>
   );
 }

@@ -1,6 +1,7 @@
 'use client';
 
 import type { Product } from '@/types';
+import { useCart } from '@/contexts/CartContext';
 import Image from 'next/image';
 import React from 'react';
 
@@ -15,9 +16,9 @@ export default function ProductDetailModal({
   product,
   isOpen,
   onClose,
-  onAddToOrder,
 }: ProductDetailModalProps) {
   const [quantity, setQuantity] = React.useState(1);
+  const { addItem } = useCart();
 
   if (!isOpen) {
     return null;
@@ -94,7 +95,7 @@ export default function ProductDetailModal({
           <button
             type="button"
             onClick={() => {
-              onAddToOrder(product, quantity);
+              addItem(product, quantity);
               onClose();
             }}
             className="flex-1 rounded bg-red-600 py-3 font-bold text-white hover:bg-red-700"

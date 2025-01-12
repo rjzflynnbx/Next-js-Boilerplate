@@ -2,9 +2,8 @@
 
 import type { Product } from '@/types';
 import Layout from '@/components/Layout';
-import ProductDetailModal from '@/components/ProductDetailModal';
 import ProductGrid from '@/components/ProductGrid';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const categories = [
   { id: 'recommended', name: 'RECOMMENDED' },
@@ -124,12 +123,39 @@ const mockProducts: Product[] = [
 
 export default function HomePage() {
   const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({});
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [activeCategory, setActiveCategory] = useState('recommended'); // Add this
+  const [activeCategory, setActiveCategory] = useState('recommended');
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + 200; // offset for better UX
+
+      for (const [category, ref] of Object.entries(sectionRefs.current)) {
+        if (!ref) {
+          continue;
+        }
+
+        const { offsetTop, offsetHeight } = ref;
+
+        if (scrollPosition >= offsetTop
+          && scrollPosition < offsetTop + offsetHeight) {
+          setActiveCategory(category);
+          break;
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Initial check
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const scrollToCategory = (categoryId: string) => {
-    sectionRefs.current[categoryId]?.scrollIntoView({ behavior: 'smooth' });
-    setActiveCategory(categoryId); // Update active category when scrolling
+    sectionRefs.current[categoryId]?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    });
+    setActiveCategory(categoryId);
   };
 
   const productsByCategory = categories.map(category => ({
@@ -138,27 +164,25 @@ export default function HomePage() {
   }));
 
   return (
-    <Layout
-      onCategoryClick={scrollToCategory}
-      activeCategory={activeCategory} // Add this prop
-    >
+    <Layout activeCategory={activeCategory} onCategoryClick={scrollToCategory}>
       <main className="p-8">
         {productsByCategory.map(({ id, name, products }) => (
           <section
             key={id}
-            ref={(el) => {
-              if (el) {
-                sectionRefs.current[id] = el as HTMLDivElement;
+            ref={(element: HTMLDivElement | null) => {
+              if (element) {
+                sectionRefs.current[id] = element;
               }
             }}
             className="mb-12"
+            id={id}
           >
             <h2 className="mb-6 text-3xl font-bold">{name}</h2>
             {products.length > 0
               ? (
                   <ProductGrid
                     products={products}
-                    onProductSelect={product => setSelectedProduct(product)}
+                    onProductSelect={() => {}}
                   />
                 )
               : (
@@ -167,17 +191,6 @@ export default function HomePage() {
           </section>
         ))}
       </main>
-
-      {selectedProduct && (
-        <ProductDetailModal
-          product={selectedProduct}
-          isOpen={!!selectedProduct}
-          onClose={() => setSelectedProduct(null)}
-          onAddToOrder={(_product, _quantity) => {
-            setSelectedProduct(null);
-          }}
-        />
-      )}
     </Layout>
   );
 }
