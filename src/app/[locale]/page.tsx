@@ -2,6 +2,7 @@
 
 import type { Product } from '@/types';
 import Layout from '@/components/Layout';
+import ProductDetailModal from '@/components/ProductDetailModal';
 import ProductGrid from '@/components/ProductGrid';
 import { useEffect, useRef, useState } from 'react';
 
@@ -20,110 +21,184 @@ const categories = [
 ];
 
 const mockProducts: Product[] = [
-  // Recommended
+  // RECOMMENDED
   {
     id: 'rec-1',
     name: 'Boneless Banquet',
     price: 9.99,
-    description: '3 Mini Fillets, small Popcorn chicken, regular Signature fries & your choice of side.',
+    description: '3 Mini Fillets, small Popcorn chicken, regular Signature fries & your choice of side. Plus one Original Recipe dip.',
     image: 'https://assets.kfcapi.com//fit-in/640x0/api/product/a6b59690-9f73-4213-a996-f68b35f0a538.jpg',
     category: 'recommended',
+    calories: '840kcal',
   },
-  // Sharing Buckets
+  {
+    id: 'rec-2',
+    name: 'Zinger Stacker',
+    price: 7.99,
+    description: 'Double the kick with 2 spicy Zinger Fillets with 2 slices of cheese, Supercharger & sweet chilli sauce.',
+    image: 'https://assets.kfcapi.com//fit-in/640x0/api/product/d7e70b33-f3cc-49b0-a70d-3e4fde25b876.jpg',
+    category: 'recommended',
+    calories: '780kcal',
+  },
+
+  // SHARING BUCKETS
   {
     id: 'bucket-1',
-    name: 'Bargain Bucket: 6 PC',
-    price: 14.99,
-    description: '6 pieces of our famous Original Recipe chicken with 4 regular Signature fries.',
-    image: 'https://assets.kfcapi.com//fit-in/640x0/api/product/2b0cfd1a-1290-44db-9540-e50916bc7a87.jpg',
+    name: 'Bargain Bucket: 10 pc',
+    price: 18.99,
+    description: '10 pieces of our famous Original Recipe chicken with 4 regular Signature fries. Serious bang for you.',
+    image: 'https://assets.kfcapi.com//fit-in/640x0/api/product/00eb2db4-5040-485d-a28c-9aa996509ec5.jpg',
     category: 'sharing-buckets',
+    calories: '1200kcal',
   },
-  // Box Meals
+  {
+    id: 'bucket-2',
+    name: 'Family Feast: 6 pc',
+    price: 18.99,
+    description: '6 pieces of our famous Original Recipe chicken, 4 regular Signature fries, 2 large sides & a large bottle drink.',
+    image: 'https://assets.kfcapi.com//fit-in/640x0/api/product/50cc1826-eb59-4f6a-af47-5cb23a576eac.jpg',
+    category: 'sharing-buckets',
+    calories: '1100kcal',
+  },
+  {
+    id: 'bucket-3',
+    name: 'Party Bucket',
+    price: 34.99,
+    description: '14 pieces of Original Recipe chicken, 8 Hot Wings, 8 Mini Fillets, large Popcorn chicken, 6 regular fries.',
+    image: 'https://assets.kfcapi.com//fit-in/640x0/api/product/ea6c7eed-fe59-4965-8a6b-68691a959af5.jpg',
+    category: 'sharing-buckets',
+    calories: '2400kcal',
+  },
+
+  // BOX MEALS
   {
     id: 'box-1',
-    name: 'Mighty Box Meal',
-    price: 10.49,
-    description: '2 pieces of Original Recipe chicken, 2 Mini Fillets, 2 hot wings, regular fries, side and drink.',
-    image: 'https://assets.kfcapi.com//fit-in/640x0/api/product/a7af2847-e7b7-4d8d-8ed0-ba486dfd4d7c.jpg', // Add your working URL
+    name: 'Trilogy Box Meal',
+    price: 9.99,
+    description: 'Fiery Zinger Burger, Mini Fillet, small Popcorn chicken, regular Signature fries & your choice of side.',
+    image: 'https://assets.kfcapi.com//fit-in/640x0/api/product/a7af2847-e7b7-4d8d-8ed0-ba486dfd4d7c.jpg',
     category: 'box-meals',
+    calories: '950kcal',
   },
-  // Burgers
+  {
+    id: 'box-2',
+    name: 'Zinger Box Meal',
+    price: 8.99,
+    description: 'Zinger Burger plus 2 fiery Hot Wings, regular Signature fries, your choice of side & a drink.',
+    image: 'https://assets.kfcapi.com//fit-in/640x0/api/product/967a3807-f40d-432f-a8bc-32eb4021ecf1.jpg',
+    category: 'box-meals',
+    calories: '870kcal',
+  },
+
+  // BURGERS
   {
     id: 'burger-1',
     name: 'Zinger Tower Burger',
-    price: 8.49,
-    description: 'A spicy Zinger fillet topped with hash brown, cheese & spicy Supercharger sauce.',
-    image: 'https://assets.kfcapi.com//fit-in/640x0/api/product/41946c60-32f1-4e36-890d-6c99ee806c1f.jpg', // Add your working URL
+    price: 6.99,
+    description: 'A fiery Zinger Fillet Burger topped with hash brown, cheese & spicy Supercharger sauce.',
+    image: 'https://assets.kfcapi.com//fit-in/640x0/api/product/fba5eaef-b639-4228-a6e4-0a75123d1178.jpg',
     category: 'burgers',
+    calories: '750kcal',
   },
-  // Vegan
+  {
+    id: 'burger-2',
+    name: 'BBQ Fillet Tower Burger',
+    price: 6.99,
+    description: 'Original Recipe Fillet Burger topped with crispy hashbrown, cheese and smoky BBQ sauce.',
+    image: 'https://assets.kfcapi.com//fit-in/640x0/api/product/55ed8946-d18c-4ca0-868c-b232e1e13301.jpg',
+    category: 'burgers',
+    calories: '730kcal',
+  },
+  {
+    id: 'burger-3',
+    name: 'Fillet Burger',
+    price: 5.99,
+    description: 'Original Recipe Fillet Burger. You cant go wrong.',
+    image: 'https://assets.kfcapi.com//fit-in/640x0/api/product/d77d39b8-0261-4218-b8b4-5f2fe1636d91.jpg',
+    category: 'burgers',
+    calories: '475kcal',
+  },
+
+  // VEGAN
   {
     id: 'vegan-1',
-    name: 'Original Recipe Vegan Burger',
-    price: 7.99,
-    description: 'Quorn fillet coated in Original Recipe coating, with fresh lettuce and vegan mayo.',
-    image: 'https://assets.kfcapi.com//fit-in/640x0/api/product/8c6c3895-cd43-4fe1-aba8-ad3f047e8cf4.jpg', // Add your working URL
+    name: 'Vegan Burger',
+    price: 5.99,
+    description: 'Quorn fillet coated in our famous 11 herbs & spices in a sesame bun with lettuce & vegan mayo.',
+    image: 'https://assets.kfcapi.com//fit-in/640x0/api/product/8c6c3895-cd43-4fe1-aba8-ad3f047e8cf4.jpg',
     category: 'vegan',
+    calories: '450kcal',
   },
-  // Buckets for One
+
+  // BUCKETS FOR ONE
   {
     id: 'single-1',
-    name: 'Mighty Bucket for One',
-    price: 8.99,
-    description: 'Original Recipe chicken, Mini Fillets, wings, fries, drink and a side.',
-    image: 'https://assets.kfcapi.com//fit-in/640x0/api/product/a5558af3-3efa-478d-9b76-551686f110f9.jpg', // Add your working URL
+    name: 'Mighty Bucket For One',
+    price: 9.99,
+    description: '2 pieces of Original Recipe chicken, 2 Mini Fillets & 2 hot wings, regular fries, side and drink.',
+    image: 'https://assets.kfcapi.com//fit-in/640x0/api/product/a5558af3-3efa-478d-9b76-551686f110f9.jpg',
     category: 'buckets-for-one',
+    calories: '1050kcal',
   },
-  // Twister Wraps
+
+  // TWISTER WRAPS
   {
     id: 'wrap-1',
-    name: 'Zinger Twister Wrap',
-    price: 7.49,
-    description: 'Zinger fillet with lettuce and pepper mayo, wrapped in a tortilla.',
-    image: 'https://assets.kfcapi.com//fit-in/640x0/api/product/d6902a66-5ba8-4944-940b-428587f0882e.jpg', // Add your working URL
+    name: 'Twister Wrap',
+    price: 5.99,
+    description: 'An Original Recipe fillet with crunchy pickled slaw and your choice of sauce, wrapped in a lightly toasted tortilla.',
+    image: 'https://assets.kfcapi.com//fit-in/640x0/api/product/d6902a66-5ba8-4944-940b-428587f0882e.jpg',
     category: 'twister-wraps',
+    calories: '480kcal',
   },
-  // Riceboxes & Salads
+
+  // RICEBOXES & SALADS
   {
     id: 'rice-1',
     name: 'Original Recipe Ricebox',
     price: 5.49,
-    description: 'Original Recipe chicken fillet with spicy rice, lettuce & bean salsa.',
-    image: 'https://assets.kfcapi.com//fit-in/640x0/api/product/83e8767c-37ee-49f1-b485-e757ad67d602.jpg', // Add your working URL
+    description: 'An Original Recipe chicken Fillet with spicy rice, lettuce & bean salsa, drizzled with buttermilk dressing.',
+    image: 'https://assets.kfcapi.com//fit-in/640x0/api/product/83e8767c-37ee-49f1-b485-e757ad67d602.jpg',
     category: 'riceboxes',
+    calories: '520kcal',
   },
-  // Kentucky Savers
+
+  // KENTUCKY SAVERS
   {
     id: 'saver-1',
     name: 'Mini Fillet Burger',
-    price: 2.49,
-    description: 'Original Recipe Mini Fillet with lettuce and mayo in a soft bun.',
-    image: 'https://assets.kfcapi.com//fit-in/640x0/api/product/489a150b-b760-4458-969e-dd018dc37411.jpg', // Add your working URL
+    price: 1.99,
+    description: 'Our Mini Fillet burger with lettuce & pepper mayo. Ideal for little appetites.',
+    image: 'https://assets.kfcapi.com//fit-in/640x0/api/product/cff77764-4a7d-41a7-888f-720961ef99af.jpg',
     category: 'kentucky-savers',
+    calories: '280kcal',
   },
-  // Just Chicken
+
+  // JUST CHICKEN
   {
     id: 'chicken-1',
-    name: '2 Piece Original Recipe',
+    name: 'Hot Wings: 6 pc',
     price: 4.99,
-    description: '2 pieces of our classic Original Recipe chicken.',
-    image: 'https://assets.kfcapi.com//fit-in/640x0/api/product/bb2948d7-e163-4cb4-b6f2-1d837e08f121.jpg', // Add your working URL
+    description: '6 spicy Hot Wings. The perfect spicy snack.',
+    image: 'https://assets.kfcapi.com//fit-in/640x0/api/product/94a07199-9dbb-48e2-858e-9b2a1912574a.jpg',
     category: 'just-chicken',
+    calories: '390kcal',
   },
-  // Classic Sides & Dips
   {
-    id: 'side-1',
-    name: 'Regular Fries',
-    price: 2.29,
-    description: 'Our classic golden fries, perfect with every meal.',
-    image: 'https://assets.kfcapi.com//fit-in/640x0/api/product/8a2d3f1c-d6f0-4276-b7b5-4ceb82eecd05.jpg', // Add your working URL
-    category: 'sides-dips',
+    id: 'chicken-2',
+    name: 'Popcorn Chicken',
+    price: 4.99,
+    description: 'Regular portion of our Popcorn chicken pieces. Get poppin.',
+    image: 'https://assets.kfcapi.com//fit-in/640x0/api/product/5f6562d1-e4eb-47a8-9313-2064a69c3cfd.jpg',
+    category: 'just-chicken',
+    calories: '285kcal',
   },
 ];
 
 export default function HomePage() {
   const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const [activeCategory, setActiveCategory] = useState('recommended');
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null); // Add this
 
   useEffect(() => {
     const handleScroll = () => {
@@ -182,7 +257,7 @@ export default function HomePage() {
               ? (
                   <ProductGrid
                     products={products}
-                    onProductSelect={() => {}}
+                    onProductSelect={setSelectedProduct} // Update this
                   />
                 )
               : (
@@ -191,6 +266,18 @@ export default function HomePage() {
           </section>
         ))}
       </main>
+
+      {/* Add this */}
+      {selectedProduct && (
+        <ProductDetailModal
+          product={selectedProduct}
+          isOpen={!!selectedProduct}
+          onClose={() => setSelectedProduct(null)}
+          onAddToOrder={function (_product: Product, _quantity: number): void {
+            throw new Error('Function not implemented.');
+          }}
+        />
+      )}
     </Layout>
   );
 }
