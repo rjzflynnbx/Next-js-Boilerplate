@@ -4,14 +4,11 @@ import { init } from '@sitecore/engage';
 
 class EngageService {
   private static instance: Engage | null = null;
+  private static initializationPromise: Promise<Engage | null> | null = null;
 
   static async initialize() {
-    if (this.instance) {
-      return this.instance;
-    }
-
-    try {
-      this.instance = await init({
+    if (!this.initializationPromise) {
+      this.initializationPromise = init({
         clientKey: 'sise1eunua85o8xcud0kedjg1clno632',
         targetURL: 'https://api-engage-eu.sitecorecloud.io',
         pointOfSale: 'SomeDemo',
@@ -20,16 +17,22 @@ class EngageService {
         forceServerCookieMode: false,
         includeUTMParameters: true,
         webPersonalization: true,
+      }).then(instance => {
+        this.instance = instance;
+        return instance;
+      }).catch(error => {
+        console.error('Failed to initialize Engage:', error);
+        this.instance = null;
+        return null;
       });
-    } catch (error) {
-      console.error('Failed to initialize Engage:', error);
-      this.instance = null;
     }
-
-    return this.instance;
+    return this.initializationPromise;
   }
 
-  static getInstance() {
+  static async getInstance() {
+    if (!this.instance) {
+      await this.initialize();
+    }
     return this.instance;
   }
 }

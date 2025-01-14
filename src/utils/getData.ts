@@ -1,9 +1,40 @@
 // src/utils/getData.ts
+'use client';
+
+import EngageService from '@/app/_api/engage';
 import type { Product } from '@/types';
 
-export function getMenuData() {
-  // This will later come from Sitecore API
-  const menuVariant = 'standard-menu'; // Other values: 'coffee-focused-menu' | 'family-meal-focus-menu'
+
+interface PersonalizationResponse {
+  component?: {
+    type?: string;
+    layout?: string;
+  };
+}
+
+export async function getMenuData() {
+  let menuVariant = 'standard-menu';  // default
+
+  try {
+    const engage = await EngageService.getInstance();
+   
+    if (engage) {
+      // console.log('EngageService.getInstance()', );
+      const response = await engage.personalize({
+        channel: "WEB",
+        currency: "GBP",
+        pointOfSale: "SomeDemo",
+        friendlyId: "kfc__menu_categories_ordering_1"
+      }) as PersonalizationResponse;
+
+      if (response?.component?.layout) {
+        menuVariant = response.component.layout;
+        // console.log('Menu variant from Engage:', menuVariant);
+      }
+    }
+  } catch (error) {
+    // console.error('Error fetching personalized menu:', error);
+  }
 
   // Default menu order
   const standardCategories = [

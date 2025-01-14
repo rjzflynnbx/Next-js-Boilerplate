@@ -1,27 +1,31 @@
+// src/components/Layout.tsx
 'use client';
 
-import { getMenuData } from '@/utils/getData';
-
-type LayoutProps = {
+interface LayoutProps {
   children: React.ReactNode;
   activeCategory: string;
   onCategoryClick: (category: string) => void;
-};
+  // Add categories to props
+  categories?: { id: string; name: string }[];
+}
 
-const { categories } = getMenuData();
-
-export default function Layout({ children, activeCategory, onCategoryClick }: LayoutProps) {
+export default function Layout({ 
+  children, 
+  activeCategory, 
+  onCategoryClick,
+  categories = [] // Provide default empty array
+}: LayoutProps) {
   return (
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar Menu */}
       <div className="w-64 bg-white shadow-lg">
-
+        
         <nav className="px-6 pt-6">
           {categories.map(category => (
             <button
               key={category.id}
               onClick={() => onCategoryClick(category.id)}
-              className={`mb-2 w-full rounded px-4 py-2 text-left ${
+              className={`w-full text-left py-2 px-4 rounded mb-2 ${
                 activeCategory === category.id ? 'bg-red-600 text-white' : 'hover:bg-gray-100'
               }`}
             >
