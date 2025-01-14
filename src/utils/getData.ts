@@ -2,7 +2,11 @@
 import type { Product } from '@/types';
 
 export function getMenuData() {
-  const categoriesControlA = [
+  // This will later come from Sitecore API
+  const menuVariant = 'family-meal-focus-menu'; // Other values: 'coffee-focused-menu' | 'family-meal-focus-menu'
+
+  // Default menu order
+  const standardCategories = [
     { id: 'recommended', name: 'RECOMMENDED' },
     { id: 'sharing-buckets', name: 'SHARING BUCKETS' },
     { id: 'box-meals', name: 'BOX MEALS' },
@@ -17,14 +21,14 @@ export function getMenuData() {
     { id: 'sides-dips', name: 'CLASSIC SIDES & DIPS' },
   ];
 
-  // Morning variant (B) - drinks moved up
-  const categoriesMorningB = [
+  // Morning menu - drinks higher up
+  const coffeeFocusedCategories = [
     { id: 'recommended', name: 'RECOMMENDED' },
     { id: 'drinks', name: 'DRINKS' },
-    { id: 'sharing-buckets', name: 'SHARING BUCKETS' },
     { id: 'box-meals', name: 'BOX MEALS' },
     { id: 'burgers', name: 'BURGERS' },
     { id: 'vegan', name: 'VEGAN' },
+    { id: 'sharing-buckets', name: 'SHARING BUCKETS' },
     { id: 'buckets-for-one', name: 'BUCKETS FOR ONE' },
     { id: 'twister-wraps', name: 'TWISTER WRAPS' },
     { id: 'riceboxes', name: 'RICEBOXES & SALADS' },
@@ -33,7 +37,32 @@ export function getMenuData() {
     { id: 'sides-dips', name: 'CLASSIC SIDES & DIPS' },
   ];
 
-  const isVariantB = false;
+  // Evening menu - family meals higher up
+  const familyFocusedCategories = [
+    { id: 'recommended', name: 'RECOMMENDED' },
+    { id: 'sharing-buckets', name: 'SHARING BUCKETS' },
+    { id: 'buckets-for-one', name: 'BUCKETS FOR ONE' },
+    { id: 'box-meals', name: 'BOX MEALS' },
+    { id: 'burgers', name: 'BURGERS' },
+    { id: 'vegan', name: 'VEGAN' },
+    { id: 'drinks', name: 'DRINKS' },
+    { id: 'twister-wraps', name: 'TWISTER WRAPS' },
+    { id: 'riceboxes', name: 'RICEBOXES & SALADS' },
+    { id: 'kentucky-savers', name: 'KENTUCKY SAVERS' },
+    { id: 'just-chicken', name: 'JUST CHICKEN' },
+    { id: 'sides-dips', name: 'CLASSIC SIDES & DIPS' },
+  ];
+
+  const getMenuCategories = (variant: string) => {
+    switch (variant) {
+      case 'coffee-focused-menu':
+        return coffeeFocusedCategories;
+      case 'family-meal-focus-menu':
+        return familyFocusedCategories;
+      default:
+        return standardCategories;
+    }
+  };
 
   const products: Product[] = [
     // RECOMMENDED
@@ -231,7 +260,7 @@ export function getMenuData() {
   ];
 
   return {
-    categories: (isVariantB) ? categoriesMorningB : categoriesControlA,
+    categories: getMenuCategories(menuVariant),
     products,
   };
 }
