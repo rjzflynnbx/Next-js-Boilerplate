@@ -3,10 +3,9 @@
 
 import type { Product } from '@/types';
 import { useCart } from '@/contexts/CartContext';
-import { useState } from 'react';
-
-// This will later be controlled by SDK
-const isVariantB = false;
+import { useState, useEffect } from 'react';
+import EngageService from '@/app/_api/engage';
+import type { PersonalizationResponse } from '@/types/personalization';
 
 // Control layout (A) - Original ordering controls
 const ControlLayout = ({
@@ -91,7 +90,32 @@ export default function ProductDetailModal({
   onClose,
 }: Props) {
   const [quantity, setQuantity] = useState(1);
+  const [isVariantB, setIsVariantB] = useState(false);
   const { addItem } = useCart(); // Using the existing cart functionality
+
+  useEffect(() => {
+    const fetchExperimentVariant = async () => {
+      try {
+        const engage = await EngageService.getInstance();
+        
+        if (engage) {
+          const response = await engage.personalize({
+            channel: "WEB",
+            currency: "GBP",
+            pointOfSale: "SomeDemo",
+            friendlyId: "kfc__product_detail_modal_test"
+          }) as PersonalizationResponse;
+
+          // Assuming the response indicates the variant
+          setIsVariantB(response?.component?.layout === 'variant-b');
+        }
+      } catch (error) {
+        console.error('Error fetching product detail modal experiment:', error);
+      }
+    };
+
+    fetchExperimentVariant();
+  }, []);
 
   if (!isOpen) {
     return null;
