@@ -1,6 +1,7 @@
 'use client';
 
 import type { Product } from '@/types';
+import EngageService from '@/app/_api/engage';
 import Layout from '@/components/Layout';
 import ProductDetailModal from '@/components/ProductDetailModal';
 import ProductGrid from '@/components/ProductGrid';
@@ -17,6 +18,23 @@ export default function HomePage() {
   const [activeCategory, setActiveCategory] = useState(categories[0]?.id ?? 'recommended');
 
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+
+  useEffect(() => {
+    const sendPageView = async () => {
+      const engage = EngageService.getInstance();
+      if (engage) {
+        await engage.pageView({
+          channel: 'WEB',
+          currency: 'GBP',
+          pointOfSale: 'SomeDemo',
+          page: 'homescreen',
+          language: 'en',
+        });
+      }
+    };
+
+    sendPageView();
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {

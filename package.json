@@ -35,6 +35,7 @@
     "@hookform/resolvers": "^3.9.1",
     "@logtail/pino": "^0.5.2",
     "@sentry/nextjs": "^8.43.0",
+    "@sitecore/engage": "^1.4.3",
     "@spotlightjs/spotlight": "^2.7.0",
     "@t3-oss/env-nextjs": "^0.11.1",
     "drizzle-orm": "^0.38.0",

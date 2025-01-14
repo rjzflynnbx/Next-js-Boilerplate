@@ -3,7 +3,7 @@ import type { Product } from '@/types';
 
 export function getMenuData() {
   // This will later come from Sitecore API
-  const menuVariant = 'family-meal-focus-menu'; // Other values: 'coffee-focused-menu' | 'family-meal-focus-menu'
+  const menuVariant = 'standard-menu'; // Other values: 'coffee-focused-menu' | 'family-meal-focus-menu'
 
   // Default menu order
   const standardCategories = [
@@ -40,17 +40,17 @@ export function getMenuData() {
   // Evening menu - family meals higher up
   const familyFocusedCategories = [
     { id: 'recommended', name: 'RECOMMENDED' },
-    { id: 'sharing-buckets', name: 'SHARING BUCKETS' },
-    { id: 'buckets-for-one', name: 'BUCKETS FOR ONE' },
-    { id: 'box-meals', name: 'BOX MEALS' },
-    { id: 'burgers', name: 'BURGERS' },
+    { id: 'sharing-buckets', name: 'SHARING BUCKETS' }, // Family sized
+    { id: 'box-meals', name: 'BOX MEALS' }, // Family friendly
+    { id: 'drinks', name: 'DRINKS' }, // Sharing drinks higher
+    { id: 'sides-dips', name: 'CLASSIC SIDES & DIPS' }, // Sharing sides higher
+    { id: 'burgers', name: 'BURGERS' }, // Individual items lower
+    { id: 'buckets-for-one', name: 'BUCKETS FOR ONE' }, // Still bucket focused
     { id: 'vegan', name: 'VEGAN' },
-    { id: 'drinks', name: 'DRINKS' },
     { id: 'twister-wraps', name: 'TWISTER WRAPS' },
     { id: 'riceboxes', name: 'RICEBOXES & SALADS' },
     { id: 'kentucky-savers', name: 'KENTUCKY SAVERS' },
     { id: 'just-chicken', name: 'JUST CHICKEN' },
-    { id: 'sides-dips', name: 'CLASSIC SIDES & DIPS' },
   ];
 
   const getMenuCategories = (variant: string) => {
