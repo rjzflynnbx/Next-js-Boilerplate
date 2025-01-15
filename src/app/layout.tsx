@@ -18,9 +18,9 @@ export default function RootLayout({
         <CartProvider>
           <div className="min-h-screen flex flex-col">
             <header className="bg-white border-b">
-            <div className="container mx-auto flex justify-end p-2 px-8">
-  <CartIcon />
-</div>
+              <div className="container mx-auto flex justify-end p-2 px-8">
+                <CartIcon />
+              </div>
             </header>
             <main className="flex-1">
               {children}

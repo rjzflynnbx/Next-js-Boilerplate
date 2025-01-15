@@ -42,8 +42,8 @@ export default function Layout({
       <div className="flex-1 overflow-auto">{children}</div>
 
        {/* Demo Controls */}
-      <DemoLoginButton />     {/* Login top-right */}
-      <DemoTimeControl />     {/* Time bottom-left */}
+      {/* <DemoLoginButton />    */}
+      <DemoTimeControl />    
     </div>
   );
 }
