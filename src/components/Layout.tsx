@@ -1,6 +1,8 @@
 // src/components/Layout.tsx
 'use client';
 
+import DemoTimeControl from './DemoTimeControl';
+
 interface LayoutProps {
   children: React.ReactNode;
   activeCategory: string;
@@ -37,6 +39,7 @@ export default function Layout({
 
       {/* Main Content */}
       <div className="flex-1 overflow-auto">{children}</div>
+      <DemoTimeControl />
     </div>
   );
 }

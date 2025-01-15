@@ -17,34 +17,38 @@ export async function getMenuData() {
 
   try {
     const engage = await EngageService.getInstance();
-   
+
     if (engage) {
-      // console.log('EngageService.getInstance()', );
+      // Get time from localStorage, default to current hour if not set
+      const timeOfDay = localStorage.getItem('kfcTimeOfDay') || new Date().getHours().toString();
+
       const response = await engage.personalize({
         channel: "WEB",
         currency: "GBP",
         pointOfSale: "SomeDemo",
-        friendlyId: "kfc__menu_categories_ordering_1"
+        friendlyId: "kfc__menu_categories_ordering_1",
+        params: {
+          timeOfDay: parseInt(timeOfDay)
+        }
       }) as PersonalizationResponse;
 
       if (response?.component?.layout) {
         menuVariant = response.component.layout;
-        // console.log('Menu variant from Engage:', menuVariant);
       }
     }
   } catch (error) {
-    // console.error('Error fetching personalized menu:', error);
+    console.error('Error fetching personalized menu:', error);
   }
 
   // Default menu order
   const standardCategories = [
     { id: 'recommended', name: 'RECOMMENDED' },
+    { id: 'buckets-for-one', name: 'BUCKETS FOR ONE' },
+    { id: 'burgers', name: 'BURGERS' },
+    { id: 'drinks', name: 'DRINKS' },
     { id: 'sharing-buckets', name: 'SHARING BUCKETS' },
     { id: 'box-meals', name: 'BOX MEALS' },
-    { id: 'burgers', name: 'BURGERS' },
     { id: 'vegan', name: 'VEGAN' },
-    { id: 'drinks', name: 'DRINKS' },
-    { id: 'buckets-for-one', name: 'BUCKETS FOR ONE' },
     { id: 'twister-wraps', name: 'TWISTER WRAPS' },
     { id: 'riceboxes', name: 'RICEBOXES & SALADS' },
     { id: 'kentucky-savers', name: 'KENTUCKY SAVERS' },
