@@ -1,6 +1,7 @@
 // src/components/Layout.tsx
 'use client';
 
+import DemoLoginButton from './DemoLoginButton';
 import DemoTimeControl from './DemoTimeControl';
 
 interface LayoutProps {
@@ -39,7 +40,10 @@ export default function Layout({
 
       {/* Main Content */}
       <div className="flex-1 overflow-auto">{children}</div>
-      <DemoTimeControl />
+
+       {/* Demo Controls */}
+      <DemoLoginButton />     {/* Login top-right */}
+      <DemoTimeControl />     {/* Time bottom-left */}
     </div>
   );
 }
