@@ -288,6 +288,18 @@ export async function getMenuData() {
       category: 'just-chicken',
       calories: '285kcal',
     },
+
+    //SIDES & DIPS
+
+    {
+      id: 'regular-signature-fries',
+      name: 'Regular Signature Fries',
+      price: 2.19,
+      description: 'We’ve seasoned the King of all sides.',
+      image: 'https://assets.kfcapi.com//fit-in/640x0/api/product/8a2d3f1c-d6f0-4276-b7b5-4ceb82eecd05.jpg',
+      category: 'sides-dips',
+      calories: '285kcal',
+    }
   ];
 
   return {

@@ -4,12 +4,39 @@
 import CrossSell from '@/components/CrossSell';
 import { useCart } from '@/contexts/CartContext';
 import Link from 'next/link';
-
-// This will later be controlled by SDK
-const isVariantB = true;
+import { useState, useEffect } from 'react';
+import EngageService from '@/app/_api/engage';
+import type { PersonalizationResponse } from '@/types/personalization';
 
 export default function CartPage() {
   const { items, removeItem, updateQuantity } = useCart();
+  const [crossSellPosition, setCrossSellPosition] = useState<'below' | 'above'>('below');
+
+  useEffect(() => {
+    const fetchCrossSellVariant = async () => {
+      try {
+        const engage = await EngageService.getInstance();
+        
+        if (engage) {
+          const response = await engage.personalize({
+            channel: "WEB",
+            currency: "GBP",
+            pointOfSale: "SomeDemo",
+            friendlyId: "kfc__cart_upsell_crosssell"
+          }) as PersonalizationResponse;
+
+          // Determine cross-sell position based on response
+          if (response?.component?.position === 'above') {
+            setCrossSellPosition('above');
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching cart cross-sell experiment:', error);
+      }
+    };
+
+    fetchCrossSellVariant();
+  }, []);
 
   const cartTotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
@@ -37,8 +64,12 @@ export default function CartPage() {
 
       <h1 className="mb-8 text-2xl font-bold">YOUR ORDER</h1>
 
-      {/* Variant B shows CrossSell here */}
-      {isVariantB && <CrossSell />}
+      {/* Variant B shows CrossSell above items */}
+      {crossSellPosition === 'above' && (
+        <div className="mb-8">
+          <CrossSell />
+        </div>
+      )}
 
       {items.map(item => (
         <div
@@ -96,8 +127,12 @@ export default function CartPage() {
         </button>
       </div>
 
-      {/* Control shows CrossSell here */}
-      {!isVariantB && <div className="mt-8"><CrossSell /></div>}
+      {/* Control shows CrossSell below items */}
+      {crossSellPosition === 'below' && (
+        <div className="mt-8">
+          <CrossSell />
+        </div>
+      )}
     </div>
   );
 }

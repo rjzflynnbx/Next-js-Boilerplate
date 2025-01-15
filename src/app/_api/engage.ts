@@ -8,6 +8,7 @@ class EngageService {
 
   static async initialize() {
     if (!this.initializationPromise) {
+      console.log('Initializing Engage SDK'); // Add this
       this.initializationPromise = init({
         clientKey: 'sise1eunua85o8xcud0kedjg1clno632',
         targetURL: 'https://api-engage-eu.sitecorecloud.io',
