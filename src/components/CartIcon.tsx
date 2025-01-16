@@ -1,3 +1,4 @@
+// src/components/CartIcon.tsx
 'use client';
 
 import { useCart } from '@/contexts/CartContext';
@@ -8,8 +9,8 @@ export default function CartIcon() {
 
   return (
     <Link
-      href="/en/cart" // Updated to include locale
-      className="flex items-center gap-2 px-4 py-2"
+      href="/en/cart"
+      className="flex items-center gap-2 rounded-lg bg-white px-4 py-2"
     >
       <div className="relative">
         <svg
@@ -35,8 +36,7 @@ export default function CartIcon() {
         )}
       </div>
       <span className="font-bold">
-        £
-        {totalPrice.toFixed(2)}
+        £{totalPrice.toFixed(2)}
       </span>
     </Link>
   );

@@ -1,23 +1,30 @@
 // src/components/Layout.tsx
 'use client';
 
+import CartIcon from './CartIcon';
 import DemoLoginButton from './DemoLoginButton';
 import DemoTimeControl from './DemoTimeControl';
+import { useEffect, useState } from 'react';
+import { getMenuData } from '@/utils/getData';
+import type { Product } from '@/types';
 
 interface LayoutProps {
   children: React.ReactNode;
   activeCategory: string;
   onCategoryClick: (category: string) => void;
-  // Add categories to props
-  categories?: { id: string; name: string }[];
 }
 
-export default function Layout({ 
-  children, 
-  activeCategory, 
-  onCategoryClick,
-  categories = [] // Provide default empty array
-}: LayoutProps) {
+export default function Layout({ children, activeCategory, onCategoryClick }: LayoutProps) {
+  const [categories, setCategories] = useState<{ id: string; name: string; }[]>([]);
+
+  useEffect(() => {
+    const loadCategories = async () => {
+      const data = await getMenuData();
+      setCategories(data.categories);
+    };
+    loadCategories();
+  }, []);
+
   return (
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar Menu */}
@@ -38,12 +45,24 @@ export default function Layout({
         </nav>
       </div>
 
-      {/* Main Content */}
-      <div className="flex-1 overflow-auto">{children}</div>
+      {/* Main Content Area with Header */}
+      <div className="flex-1 flex flex-col">
+        {/* Header */}
+        <div className="h-16 bg-white shadow-sm flex items-center justify-end px-6">
+          <div className="flex items-center gap-4">
+            <DemoLoginButton />
+            <CartIcon />
+          </div>
+        </div>
+        
+        {/* Main Content */}
+        <div className="flex-1 overflow-auto">
+          {children}
+        </div>
+      </div>
 
-       {/* Demo Controls */}
-      {/* <DemoLoginButton />    */}
-      <DemoTimeControl />    
+      {/* Demo Time Control stays at bottom */}
+      <DemoTimeControl />
     </div>
   );
 }

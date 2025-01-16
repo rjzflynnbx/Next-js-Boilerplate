@@ -17,11 +17,11 @@ export default function RootLayout({
       <body className={inter.className}>
         <CartProvider>
           <div className="min-h-screen flex flex-col">
-            <header className="bg-white border-b">
+            {/* <header className="bg-white border-b">
               <div className="container mx-auto flex justify-end p-2 px-8">
                 <CartIcon />
               </div>
-            </header>
+            </header> */}
             <main className="flex-1">
               {children}
             </main>
