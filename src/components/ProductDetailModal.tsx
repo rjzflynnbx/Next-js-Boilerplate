@@ -93,6 +93,42 @@ export default function ProductDetailModal({
   const [isVariantB, setIsVariantB] = useState(false);
   const { addItem } = useCart(); // Using the existing cart functionality
 
+  // Tracking product view
+  useEffect(() => {
+    let isMounted = true;
+
+    const trackProductView = async () => {
+      if (isMounted && isOpen && product) {
+        try {
+          const engage = await EngageService.getInstance();
+          await engage?.event('KFC_PRODUCT_VIEWED', {
+            channel: "KIOSK",
+            currency: "GBP",
+            pointOfSale: "SomeDemo",
+            page: "product",
+            language: "en"
+          }, {
+            productId: product.id,
+            productName: product.name,
+            productCategory: product.category,
+            price: product.price,
+            calories: product.calories
+          });
+        } catch (error) {
+          console.log('Engage tracking error:', error);
+        }
+      }
+    };
+
+    trackProductView();
+
+    // Cleanup function to handle unmounting
+    return () => {
+      isMounted = false;
+    };
+  }, [isOpen, product]);
+
+  // Experiment variant fetching
   useEffect(() => {
     const fetchExperimentVariant = async () => {
       try {

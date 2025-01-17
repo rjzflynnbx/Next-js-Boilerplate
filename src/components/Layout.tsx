@@ -1,4 +1,3 @@
-// src/components/Layout.tsx
 'use client';
 
 import CartIcon from './CartIcon';
@@ -7,7 +6,7 @@ import DemoTimeControl from './DemoTimeControl';
 import { useEffect, useState } from 'react';
 import { getMenuData } from '@/utils/getData';
 import type { Product } from '@/types';
-
+import EngageService from '@/app/_api/engage';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -27,6 +26,28 @@ export default function Layout({ children, activeCategory, onCategoryClick }: La
     loadCategories();
   }, []);
 
+  const handleCategoryClick = async (categoryId: string, categoryName: string) => {
+    // Call original click handler
+    onCategoryClick(categoryId);
+
+    // Track the category click
+    try {
+      const engage = await EngageService.getInstance();
+      await engage?.event('KFC_CATEGORY_CLICKED', {
+        channel: "KIOSK",
+        currency: "GBP",
+        pointOfSale: "SomeDemo",
+        page: "home",
+        language: "en"
+      }, {
+        categoryId,
+        categoryName
+      });
+    } catch (error) {
+      console.log('Engage tracking error:', error);
+    }
+  };
+
   return (
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar Menu */}
@@ -36,7 +57,7 @@ export default function Layout({ children, activeCategory, onCategoryClick }: La
           {categories.map(category => (
             <button
               key={category.id}
-              onClick={() => onCategoryClick(category.id)}
+              onClick={() => handleCategoryClick(category.id, category.name)}
               className={`w-full text-left py-2 px-4 rounded mb-2 ${
                 activeCategory === category.id ? 'bg-red-600 text-white' : 'hover:bg-gray-100'
               }`}
