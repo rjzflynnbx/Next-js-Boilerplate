@@ -1,61 +1,66 @@
-// src/components/DemoLoginButton.tsx
-'use client';
+import React, { useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 
-import { useState, useEffect } from 'react';
-
-export default function DemoLoginButton() {
+const DemoLoginButton = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const userType = searchParams.get('userType') || 'loyal';
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [customerId, setCustomerId] = useState<string>('regular123');
 
   useEffect(() => {
     const loginState = localStorage.getItem('kfcKnownCustomer');
-    const storedCustomerId = localStorage.getItem('kfcCustomerId');
     setIsLoggedIn(loginState === 'true');
-    if (storedCustomerId) {
-      setCustomerId(storedCustomerId);
-    }
   }, []);
 
-  const toggleLogin = () => {
-    const newState = !isLoggedIn;
-    localStorage.setItem('kfcKnownCustomer', newState.toString());
-    
-    // Handle customerId
-    if (newState) {
-      localStorage.setItem('kfcCustomerId', customerId);
-    } else {
-      localStorage.removeItem('kfcCustomerId');
-    }
-    
-    setIsLoggedIn(newState);
+  const handleLogin = () => {
+    localStorage.setItem('kfcKnownCustomer', 'true');
+    router.push('?userType=loyal');
     window.location.reload();
   };
 
-  const toggleCustomerId = () => {
-    const newId = customerId === 'regular123' ? 'vip456' : 'regular123';
-    setCustomerId(newId);
-    if (isLoggedIn) {
-      localStorage.setItem('kfcCustomerId', newId);
-      window.location.reload();
-    }
+  const handleLogout = () => {
+    localStorage.setItem('kfcKnownCustomer', 'false');
+    router.push('/en');
+    window.location.reload();
   };
+
+  const toggleUser = () => {
+    const newType = userType === 'loyal' ? 'healthy' : 'loyal';
+    router.push(`?userType=${newType}`);
+  };
+
+  if (!isLoggedIn) {
+    return (
+      <button
+        onClick={handleLogin}
+        className="text-sm text-gray-500 hover:text-gray-700"
+      >
+        Demo: Scan to Login
+      </button>
+    );
+  }
 
   return (
     <div className="flex items-center gap-2">
       <button
-        onClick={toggleLogin}
-        className="flex items-center gap-2 rounded-lg bg-white px-3 py-2 text-xs text-gray-500 opacity-30 hover:opacity-100"
+        onClick={toggleUser}
+        className="text-sm text-gray-500 hover:text-gray-700"
       >
-        <span>📱 Demo: {isLoggedIn ? 'Logout' : 'Scan to Login'}</span>
+        Demo: Switch to {userType === 'loyal' ? 'Mike' : 'Sarah'}
       </button>
-      {isLoggedIn && (
-        <button
-          onClick={toggleCustomerId}
-          className="flex items-center gap-2 rounded-lg bg-white px-3 py-2 text-xs text-gray-500 opacity-30 hover:opacity-100"
-        >
-          <span>👤 Switch to: {customerId === 'regular123' ? 'VIP' : 'Regular'}</span>
-        </button>
-      )}
+      <span className="text-gray-400">|</span>
+      <span className="text-sm text-gray-500">
+        {userType === 'loyal' ? 'Sarah' : 'Mike'}
+      </span>
+      <span className="text-gray-400">|</span>
+      <button
+        onClick={handleLogout}
+        className="text-sm text-gray-500 hover:text-gray-700"
+      >
+        Logout
+      </button>
     </div>
   );
-}
+};
+
+export default DemoLoginButton;

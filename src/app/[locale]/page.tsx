@@ -9,6 +9,8 @@ import JustForYou from '@/components/JustForYou';
 import { useEffect, useRef, useState } from 'react';
 import { getMenuData } from '@/utils/getData';
 import EngageService from '../_api/engage';
+import { useSearchParams } from 'next/navigation';
+
 
 export default function HomePage() {
   const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({});
@@ -19,6 +21,8 @@ export default function HomePage() {
   const [activeCategory, setActiveCategory] = useState('recommended');
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+   const searchParams = useSearchParams();
+  const userType = searchParams.get('userType') || 'loyal';
 
   useEffect(() => {
     // Check login state
@@ -99,7 +103,7 @@ export default function HomePage() {
       categories={menuData?.categories || []}
     >
       <main className="p-8">
-        {isLoggedIn && <JustForYou />}
+      {isLoggedIn && <JustForYou userType={userType} />}
         {productsByCategory.map(({ id, name, products }) => (
           <section
             key={id}
