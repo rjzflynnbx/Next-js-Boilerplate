@@ -1,15 +1,16 @@
 'use client';
 
 import type { Product } from '@/types';
+import React from 'react';
 import Layout from '@/components/Layout';
 import ProductDetailModal from '@/components/ProductDetailModal';
 import ProductGrid from '@/components/ProductGrid';
+import JustForYou from '@/components/JustForYou';
 import { useEffect, useRef, useState } from 'react';
 import { getMenuData } from '@/utils/getData';
 import EngageService from '../_api/engage';
 
 export default function HomePage() {
-  // Move ALL hooks to the top
   const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const [menuData, setMenuData] = useState<{
     categories: { id: string; name: string }[];
@@ -17,34 +18,34 @@ export default function HomePage() {
   } | null>(null);
   const [activeCategory, setActiveCategory] = useState('recommended');
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
+    // Check login state
+    const loginState = localStorage.getItem('kfcKnownCustomer');
+    setIsLoggedIn(loginState === 'true');
+
     // Send page view
     const sendPageView = async () => {
-      
-        const engage = await EngageService.getInstance();
-        await engage?.pageView({
-          channel: "WEB",
-          currency: "GBP",
-          pointOfSale: "SomeDemo",
-          page: "home",
-          language: "en"
-        });
-        // console.log('View event sent:', view);
-      
+      const engage = await EngageService.getInstance();
+      await engage?.pageView({
+        channel: "WEB",
+        currency: "GBP",
+        pointOfSale: "SomeDemo",
+        page: "home",
+        language: "en"
+      });
     };
     sendPageView();
 
     // Load menu data
     const loadData = async () => {
-      
-        const data = await getMenuData();
-        setMenuData(data);
-        // Update activeCategory once we have the data
-        if (data?.categories?.length > 0) {
-          setActiveCategory(data.categories?.[0]?.id || 'recommended');
-        }
-      
+      const data = await getMenuData();
+      setMenuData(data);
+      // Update activeCategory once we have the data
+      if (data?.categories?.length > 0) {
+        setActiveCategory(data.categories?.[0]?.id || 'recommended');
+      }
     };
     loadData();
   }, []);
@@ -95,9 +96,10 @@ export default function HomePage() {
     <Layout
       activeCategory={activeCategory}
       onCategoryClick={scrollToCategory}
-      categories={menuData?.categories || []}  // Pass categories with fallback
+      categories={menuData?.categories || []}
     >
       <main className="p-8">
+        {isLoggedIn && <JustForYou />}
         {productsByCategory.map(({ id, name, products }) => (
           <section
             key={id}

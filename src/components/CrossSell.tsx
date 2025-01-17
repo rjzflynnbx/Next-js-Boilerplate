@@ -7,15 +7,6 @@ import type { Product } from '@/types';
 
 const crossSellProducts: Record<string, Product> = {
   'burger-1': {
-    id: 'regular-signature-fries',
-    name: 'Regular Signature Fries',
-    description: 'Weve seasoned the King of all sides.',
-    price: 2.19,
-    image: 'https://assets.kfcapi.com//fit-in/640x0/api/product/8a2d3f1c-d6f0-4276-b7b5-4ceb82eecd05.jpg',
-    category: 'sides-dips',
-    calories: '285kcal',
-  },
-  'burger-2': {
     id: 'drink-1',
     name: 'Pepsi',
     description: 'Ice-cold Pepsi',
@@ -24,12 +15,21 @@ const crossSellProducts: Record<string, Product> = {
     category: 'drinks',
     calories: '150kcal',
   },
-  'vegan-1': {
+  'burger-3': {
     id: 'regular-signature-fries',
     name: 'Regular Signature Fries',
     description: 'Weve seasoned the King of all sides.',
     price: 2.19,
     image: 'https://assets.kfcapi.com//fit-in/640x0/api/product/8a2d3f1c-d6f0-4276-b7b5-4ceb82eecd05.jpg',
+    category: 'sides-dips',
+    calories: '285kcal',
+  },
+  'vegan-1': {
+    id: 'corn-cob-1-pc',
+    name: 'Corn Cob: 1 pc',
+    price: 1.99,
+    description: 'A golden cob of delicious corn. Sweet & juicy.',
+    image: 'https://assets.kfcapi.com//fit-in/640x0/api/product/c2aca632-c729-4843-bd04-1feadf626f50.jpg',
     category: 'sides-dips',
     calories: '285kcal',
   },

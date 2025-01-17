@@ -8,10 +8,12 @@ import { useEffect, useState } from 'react';
 import { getMenuData } from '@/utils/getData';
 import type { Product } from '@/types';
 
+
 interface LayoutProps {
   children: React.ReactNode;
   activeCategory: string;
   onCategoryClick: (category: string) => void;
+  categories: { id: string; name: string; }[]; // Add this line
 }
 
 export default function Layout({ children, activeCategory, onCategoryClick }: LayoutProps) {
