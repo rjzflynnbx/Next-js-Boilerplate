@@ -3,12 +3,13 @@
 import type { Product } from '@/types';
 import type { CartContextType, CartItem } from './types';
 import React, { createContext, useContext, useState } from 'react';
+import EngageService from '@/app/_api/engage';
 
 const initialState: CartContextType = {
   items: [],
-  addItem: () => {},
-  removeItem: () => {},
-  updateQuantity: () => {},
+  addItem: () => { },
+  removeItem: () => { },
+  updateQuantity: () => { },
   totalItems: 0,
   totalPrice: 0,
 };
@@ -26,7 +27,28 @@ export function useCart() {
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
 
-  const addItem = (product: Product, quantity: number) => {
+  const addItem = async (product: Product, quantity: number) => {
+
+    // Track add to cart event first
+    try {
+      const engage = await EngageService.getInstance();
+      await engage?.event('KFC_ADD_TO_CART', {
+        channel: "KIOSK",
+        currency: "GBP",
+        pointOfSale: "SomeDemo",
+        page: "product",
+        language: "en"
+      }, {
+        productId: product.id,
+        productName: product.name,
+        productCategory: product.category,
+        price: product.price,
+        quantity: quantity,
+      });
+    } catch (error) {
+      console.log('Engage tracking error:', error);
+    }
+
     setItems((currentItems) => {
       const existingItem = currentItems.find(item => item.id === product.id);
       if (existingItem) {
