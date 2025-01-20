@@ -8,3 +8,16 @@ export interface PersonalizationResponse {
   };
   variation?: string;
 }
+
+export interface FeatureFlag {
+  feature: {
+    enabled: boolean;
+    config?: {
+      style?: string;
+      position?: string;
+      variant?: string;
+      // any other generic config properties we might need
+      [key: string]: any;  // allows for flexible additional properties
+    }
+  }
+}

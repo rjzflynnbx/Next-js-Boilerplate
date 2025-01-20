@@ -1,14 +1,20 @@
 'use client';
 
 import type { Product } from '@/types';
+import type { FeatureFlag } from '@/types/personalization';
 import Image from 'next/image';
 
 type ProductCardProps = {
   product: Product;
   onShowDetail: (product: Product) => void;
+  caloriesFeature?: FeatureFlag['feature'];  // New optional prop
 };
 
-export default function ProductCard({ product, onShowDetail }: ProductCardProps) {
+export default function ProductCard({ 
+  product, 
+  onShowDetail, 
+  caloriesFeature = { enabled: false }  // Default value
+}: ProductCardProps) {
   return (
     <div
       role="button"
@@ -32,10 +38,14 @@ export default function ProductCard({ product, onShowDetail }: ProductCardProps)
       <div className="p-4">
         <h3 className="text-lg font-bold">{product.name}</h3>
         <p className="mt-1 text-gray-600">{product.description}</p>
+        {caloriesFeature.enabled && product.calories && (
+          <p className={`mt-1 text-sm ${caloriesFeature.config?.style === 'subtle' ? 'text-gray-400' : 'text-gray-600'}`}>
+            {product.calories}
+          </p>
+        )}
         <div className="mt-4 flex items-center justify-between">
           <span className="text-xl font-bold">
-            £
-            {product.price.toFixed(2)}
+            £{product.price.toFixed(2)}
           </span>
           <button
             type="button"
