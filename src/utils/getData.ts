@@ -43,50 +43,50 @@ export async function getMenuData() {
   // Default menu order
   const standardCategories = [
     { id: 'recommended', name: 'RECOMMENDED' },
-    { id: 'buckets-for-one', name: 'BUCKETS FOR ONE' },
-    { id: 'burgers', name: 'BURGERS' },
-    { id: 'drinks', name: 'DRINKS' },
     { id: 'sharing-buckets', name: 'SHARING BUCKETS' },
     { id: 'box-meals', name: 'BOX MEALS' },
+    { id: 'drinks', name: 'DRINKS' },
+    { id: 'burgers', name: 'BURGERS' },
+    { id: 'sides-dips', name: 'CLASSIC SIDES & DIPS' },
     { id: 'vegan', name: 'VEGAN' },
+    { id: 'buckets-for-one', name: 'BUCKETS FOR ONE' },
     { id: 'twister-wraps', name: 'TWISTER WRAPS' },
     { id: 'riceboxes', name: 'RICEBOXES & SALADS' },
     { id: 'kentucky-savers', name: 'KENTUCKY SAVERS' },
-    { id: 'just-chicken', name: 'JUST CHICKEN' },
-    { id: 'sides-dips', name: 'CLASSIC SIDES & DIPS' },
-  ];
+    { id: 'just-chicken', name: 'JUST CHICKEN' }
+]
 
   // Morning menu - drinks higher up
   const coffeeFocusedCategories = [
     { id: 'recommended', name: 'RECOMMENDED' },
     { id: 'drinks', name: 'DRINKS' },
     { id: 'box-meals', name: 'BOX MEALS' },
-    { id: 'burgers', name: 'BURGERS' },
-    { id: 'vegan', name: 'VEGAN' },
-    { id: 'sharing-buckets', name: 'SHARING BUCKETS' },
-    { id: 'buckets-for-one', name: 'BUCKETS FOR ONE' },
-    { id: 'twister-wraps', name: 'TWISTER WRAPS' },
-    { id: 'riceboxes', name: 'RICEBOXES & SALADS' },
     { id: 'kentucky-savers', name: 'KENTUCKY SAVERS' },
+    { id: 'burgers', name: 'BURGERS' },
+    { id: 'riceboxes', name: 'RICEBOXES & SALADS' },
+    { id: 'vegan', name: 'VEGAN' },
+    { id: 'twister-wraps', name: 'TWISTER WRAPS' },
+    { id: 'buckets-for-one', name: 'BUCKETS FOR ONE' },
     { id: 'just-chicken', name: 'JUST CHICKEN' },
     { id: 'sides-dips', name: 'CLASSIC SIDES & DIPS' },
-  ];
+    { id: 'sharing-buckets', name: 'SHARING BUCKETS' }
+]
 
   // Evening menu - family meals higher up
   const familyFocusedCategories = [
     { id: 'recommended', name: 'RECOMMENDED' },
-    { id: 'sharing-buckets', name: 'SHARING BUCKETS' }, // Family sized
-    { id: 'box-meals', name: 'BOX MEALS' }, // Family friendly
-    { id: 'drinks', name: 'DRINKS' }, // Sharing drinks higher
-    { id: 'sides-dips', name: 'CLASSIC SIDES & DIPS' }, // Sharing sides higher
-    { id: 'burgers', name: 'BURGERS' }, // Individual items lower
-    { id: 'buckets-for-one', name: 'BUCKETS FOR ONE' }, // Still bucket focused
-    { id: 'vegan', name: 'VEGAN' },
-    { id: 'twister-wraps', name: 'TWISTER WRAPS' },
-    { id: 'riceboxes', name: 'RICEBOXES & SALADS' },
+    { id: 'buckets-for-one', name: 'BUCKETS FOR ONE' },
+    { id: 'burgers', name: 'BURGERS' },
+    { id: 'drinks', name: 'DRINKS' },
     { id: 'kentucky-savers', name: 'KENTUCKY SAVERS' },
+    { id: 'twister-wraps', name: 'TWISTER WRAPS' },
+    { id: 'box-meals', name: 'BOX MEALS' },
+    { id: 'vegan', name: 'VEGAN' },
+    { id: 'riceboxes', name: 'RICEBOXES & SALADS' },
     { id: 'just-chicken', name: 'JUST CHICKEN' },
-  ];
+    { id: 'sides-dips', name: 'CLASSIC SIDES & DIPS' },
+    { id: 'sharing-buckets', name: 'SHARING BUCKETS' }
+]
 
   const getMenuCategories = (variant: string) => {
     switch (variant) {
@@ -120,16 +120,18 @@ export async function getMenuData() {
       calories: '780kcal',
     },
 
-    // Add DRINKS products
+    // DRINKS 
+
     {
-      id: 'drink-1',
-      name: 'Pepsi',
-      price: 1.99,
-      description: 'Ice-cold Pepsi',
-      image: 'https://assets.kfcapi.com//fit-in/640x0/api/product/9b50dd1a-ad7b-419f-abab-04488bbfb88c.jpg',
+      id: 'drink-3',
+      name: 'Latte',
+      price: 2.29,
+      description: 'A tall milky coffee. Freshly ground, 100% Arabica Beans.',
+      image: 'https://assets.kfcapi.com//fit-in/640x0/api/product/aa382615-cd86-436a-be65-b07b5feb186d.jpg',
       category: 'drinks',
-      calories: '150kcal',
+      calories: '15kcal',
     },
+
     {
       id: 'drink-2',
       name: 'Americano',
@@ -139,6 +141,17 @@ export async function getMenuData() {
       category: 'drinks',
       calories: '15kcal',
     },
+
+    {
+      id: 'drink-1',
+      name: 'Pepsi',
+      price: 1.99,
+      description: 'Ice-cold Pepsi',
+      image: 'https://assets.kfcapi.com//fit-in/640x0/api/product/9b50dd1a-ad7b-419f-abab-04488bbfb88c.jpg',
+      category: 'drinks',
+      calories: '150kcal',
+    },
+   
 
     // SHARING BUCKETS
     {
@@ -304,7 +317,6 @@ export async function getMenuData() {
       category: 'sides-dips',
       calories: '285kcal',
     },
-
     {
       id: 'corn-cob-1-pc',
       name: 'Corn Cob: 1 pc',
